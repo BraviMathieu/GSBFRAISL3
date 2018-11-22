@@ -9,7 +9,7 @@ use App\metier\GsbFrais;
 class ChangerMotDePasseController extends Controller
 {
     /**
-     * Change le mot de passe
+     * cette fonction Change le mot de passe
      * @return type Vue formLogin ou home
      */
     public function changerMdp(Request $request) 
