@@ -10,7 +10,7 @@ class ChangerMotDePasseController extends Controller
 {
     /**
      * Change le mot de passe
-     * @return type Vue formLogin ou home
+     * @return retour page de connexion avec input
      */
     public function changerMdp(Request $request) 
     {
