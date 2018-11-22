@@ -53,6 +53,16 @@ Route::post('/validerFraisHorsForfait', 'FraisHorsForfaitController@validerFrais
 // Supprimer un Frais Hors Forfait
 Route::get('/supprimerFraisHorsForfait/{idFrais}', 'FraisHorsForfaitController@supprimmerFraisHorsForfait');
 
+//Changer de mot de passe
+//Route::get('/getMdp', 'ChangerMotDePasseController@changerMdp');
+
+Route::get('/getMdp', function () {
+   return view ('changermdp');
+});
+
+Route::post('/getMdp', 'ChangerMotDePasseController@changerMdp');
+
+
 // Retourner à une vue dont on passe le nom en paramètre
 Route::get('getRetour/{retour}', function($retour){
     return redirect("/".$retour);

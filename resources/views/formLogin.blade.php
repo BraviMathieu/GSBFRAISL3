@@ -30,4 +30,3 @@
 </div>
 {!! Form::close() !!}
 @stop
-

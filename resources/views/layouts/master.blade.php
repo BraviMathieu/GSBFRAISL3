@@ -31,9 +31,8 @@
  @if (Session::get('id') == '0' || Session::get('id') == null) 
                     <a class="navbar-brand" href="#">GSB</a> 
                     <div class="collapse navbar-collapse" id="navbar-collapse-target">
-                        <ul class="nav navbar-nav navbar-right">   
-                            
-                            <li><a href="{{ url('/getLogin') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Se connecter</a></li>
+                        <ul class="nav navbar-nav navbar-right">    
+                             <li><a href="{{ url('/getLogin') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Se connecter</a></li>
                         </ul> 
                     </div>
  
@@ -45,6 +44,7 @@
                             <li><a href="{{ url('/getListeFrais') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Voir Frais</a></li>
                         </ul>  
                         <ul class="nav navbar-nav navbar-right">                             
+                            <li><a href="{{ url('/getMdp') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Changer de mot de passe</a></li>
                             <li><a href="{{ url('/Logout') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Se déconnecter</a></li>
                         </ul> 
                     </div> 
