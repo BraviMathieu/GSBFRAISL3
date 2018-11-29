@@ -43,7 +43,10 @@
                             <li><a href="{{ url('/saisirFraisForfait') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Saisir Frais</a></li>
                             <li><a href="{{ url('/getListeFrais') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Voir Frais</a></li>
                         </ul>  
-                        <ul class="nav navbar-nav navbar-right">                             
+                        <ul class="nav navbar-nav navbar-right">
+
+                            <li><a href="{{ url('/createUser') }}" data-toggle="collapse" data-target=".navbar-collapse.in">créer un utilisateur</a></li>
+
                             <li><a href="{{ url('/getMdp') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Changer de mot de passe</a></li>
                             <li><a href="{{ url('/Logout') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Se déconnecter</a></li>
                         </ul> 

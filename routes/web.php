@@ -68,3 +68,7 @@ Route::get('getRetour/{retour}', function($retour){
     return redirect("/".$retour);
 });
 
+Route::get('/createUser', function () {
+   return view ('creerUtilisateur');
+});
+Route::post('/createUser', 'creerUtilisateurController@createUser');
