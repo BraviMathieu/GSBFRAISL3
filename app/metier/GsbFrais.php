@@ -258,6 +258,16 @@ public function getInfosVisiteur($login, $mdp){
 	public function ChangerMdp($login,$mdp){
 		$req = "update visiteur set mdp = :mdp where login = :login";
 		DB::update($req, ['login'=>$login, 'mdp'=>$mdp]);
+	} 
+ /** 
+ * Récuperer le role du visiteur
+ * @param $idVisiteur
+ */
+        public function getRole($idVisiteur){
+		$req = "select * from vue_affectation where idVisiteur = :idVisiteur";
+		$laLigne = DB::select($req, ['idVisiteur'=>$idVisiteur]);
+                $lerole = $laLigne[0]->aff_role;
+                return $lerole;
 	}
 }
 ?>
