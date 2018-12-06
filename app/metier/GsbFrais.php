@@ -279,5 +279,10 @@ public function getInfosVisiteur($login, $mdp){
                 return $lesLignes;
 
         }
+        
+        public function ValiderFiche($idVisiteur,$mois){
+		$req = "update fichefrais set dateModif = date(now()), idEtat = 'VA' where idVisiteur = :idVisiteur and mois = :mois";
+		DB::update($req, ['login'=>$login, 'mdp'=>$mdp]);
+	} 
 }
 ?>
