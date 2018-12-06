@@ -258,6 +258,38 @@ public function getInfosVisiteur($login, $mdp){
 	public function ChangerMdp($login,$mdp){
 		$req = "update visiteur set mdp = :mdp where login = :login";
 		DB::update($req, ['login'=>$login, 'mdp'=>$mdp]);
+	} 
+ 
+  /**
+   * créer un nouvel utilisateur
+   *  @param $id
+   *  @param $nom
+   *  @param $prenom 
+   *  @param $ville 
+   *  @param $adresse 
+   *  @param $cp 
+   *  @param $dateEmbauch
+   *  @param $tel
+   *  @param $email
+   *  @param $region
+   *  @param $role
+   *  @param $login
+   *  @param $mdp
+   */
+        public function creerUtil($id,$nom,$prenom,$ville,$adresse,$cp,$dateEmbauch,$tel,$email,$region,$role,$login,$mdp)
+        {
+            $req ="insert into visiteur values(:id,:nom,:prenom,:login,:mdp,:adresse,:cp,:ville,:dateEmbauch,:tel,:email)";
+            DB::insert($req,['id'=>$id,'nom'=>$nom,'prenom'=>$prenom,'login'=>$login,'mdp'=>$mdp,'adresse'=>$adresse,'cp'=>$cp,'ville'=>$ville,'dateEmbauch'=>$dateEmbauch,'tel'=>$tel,'email'=>$email]);
+        }
+ /** 
+ * Récuperer le role du visiteur
+ * @param $idVisiteur
+ */
+        public function getRole($idVisiteur){
+		$req = "select * from vue_affectation where idVisiteur = :idVisiteur";
+		$laLigne = DB::select($req, ['idVisiteur'=>$idVisiteur]);
+                $lerole = $laLigne[0]->aff_role;
+                return $lerole;
 	}
 }
 ?>
