@@ -46,11 +46,11 @@
                         
     @if (Session::get('role') == 'Responsable')     
                             <li><a href="{{ url('/#') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Créer Utilisateur</a></li>  
-                            <li><a href="{{ url('/#') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Valider Fiche de frais</a></li>
+                            <li><a href="{{ url('/getValiderFrais') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Valider Fiche de frais</a></li>
     @endif
     
     @if (Session::get('role') == 'Délégué')  
-                            <li><a href="{{ url('/#') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Valider Fiche de frais</a></li>
+                            <li><a href="{{ url('/getValiderFrais') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Valider Fiche de frais</a></li>
     @endif                  
                         </ul>
                         <ul class="nav navbar-nav navbar-right">                             
