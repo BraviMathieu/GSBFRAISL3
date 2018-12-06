@@ -146,8 +146,8 @@ public function getInfosVisiteur($login, $mdp){
 		$dernierMois = $this->dernierMoisSaisi($idVisiteur);
 		$laDerniereFiche = $this->getLesInfosFicheFrais($idVisiteur,$dernierMois);
 		if($laDerniereFiche->idEtat=='CR'){
-				$this->majEtatFicheFrais($idVisiteur, $dernierMois,'CL');
-				
+                    $this->majEtatFicheFrais($idVisiteur, $dernierMois,'CL');
+                    $this->calculMontantFrais($idVisiteur,$dernierMois);
 		}
 		$req = "insert into fichefrais(idvisiteur,mois,nbJustificatifs,montantValide,dateModif,idEtat) 
 		values(:idVisiteur,:mois,0,0,now(),'CR')";
@@ -243,6 +243,7 @@ public function getInfosVisiteur($login, $mdp){
  * Modifie le champ idEtat et met la date de modif à aujourd'hui
  * @param $idVisiteur 
  * @param $mois sous la forme aaaamm
+ * @param $etat
  */
  
 	public function majEtatFicheFrais($idVisiteur,$mois,$etat){
@@ -259,6 +260,28 @@ public function getInfosVisiteur($login, $mdp){
 		$req = "update visiteur set mdp = :mdp where login = :login";
 		DB::update($req, ['login'=>$login, 'mdp'=>$mdp]);
 	} 
+ 
+  /**
+   * créer un nouvel utilisateur
+   *  @param $id
+   *  @param $nom
+   *  @param $prenom 
+   *  @param $ville 
+   *  @param $adresse 
+   *  @param $cp 
+   *  @param $dateEmbauch
+   *  @param $tel
+   *  @param $email
+   *  @param $region
+   *  @param $role
+   *  @param $login
+   *  @param $mdp
+   */
+        public function creerUtil($id,$nom,$prenom,$ville,$adresse,$cp,$dateEmbauch,$tel,$email,$region,$role,$login,$mdp)
+        {
+            $req ="insert into visiteur values(:id,:nom,:prenom,:login,:mdp,:adresse,:cp,:ville,:dateEmbauch,:tel,:email)";
+            DB::insert($req,['id'=>$id,'nom'=>$nom,'prenom'=>$prenom,'login'=>$login,'mdp'=>$mdp,'adresse'=>$adresse,'cp'=>$cp,'ville'=>$ville,'dateEmbauch'=>$dateEmbauch,'tel'=>$tel,'email'=>$email]);
+        }
  /** 
  * Récuperer le role du visiteur
  * @param $idVisiteur
@@ -277,7 +300,46 @@ public function getInfosVisiteur($login, $mdp){
                         where idEtat = 'CL'";
                 $lesLignes = DB::select($req);
                 return $lesLignes;
-
+        }
+/** 
+* Récuperer les montants et quantités d'une ligne de fichefrais
+* @param $idVisiteur 
+* @param $mois sous la forme aaaamm
+*/
+        
+        public function getMontantFraisForfait($idVisiteur,$mois)
+        {
+            $req = "select fraisforfait.montant, fraisforfait.id as idfrais,ligneFraisForfait.mois as mois,
+		lignefraisforfait.quantite as quantite from lignefraisforfait inner join fraisforfait 
+		on fraisforfait.id = lignefraisforfait.idfraisforfait
+		where lignefraisforfait.idvisiteur = :idVisiteur and lignefraisforfait.mois=:mois";
+            $lesLignes = DB::select($req, ['idVisiteur'=>$idVisiteur,'mois'=>$mois]);
+            $lemontant = $lesLignes;
+            return $lemontant;
+            
+        }
+        
+/** 
+* Calcul le montant des frais et met a jour la BDD
+* @param $idVisiteur 
+* @param $derniermois sous la forme aaaamm
+*/
+        public function calculMontantFrais($idVisiteur,$derniermois)
+        {
+            $montant = 0 ;
+            $LesFraisHorsForfait = $this->getLesFraisHorsForfait($idVisiteur, $derniermois);
+            $LesMontants = $this->getMontantFraisForfait($idVisiteur,$derniermois);
+            
+            foreach($LesFraisHorsForfait as $unFraisHorsForfait){
+                    $montant += $unFraisHorsForfait->montant;
+            }
+             foreach($LesMontants as $unMontant){
+                    $montant += $unMontant->montant*$unMontant->quantite;
+            }
+            
+            $req = "update ficheFrais set montantValide = :montant
+            where fichefrais.idvisiteur = :idVisiteur and fichefrais.mois = :mois";
+            DB::update($req, ['montant'=>$montant, 'idVisiteur'=>$idVisiteur, 'mois'=>$derniermois]);
         }
         
         public function ValiderFiche($idVisiteur,$mois){

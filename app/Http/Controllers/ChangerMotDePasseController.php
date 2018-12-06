@@ -9,9 +9,9 @@ use App\metier\GsbFrais;
 class ChangerMotDePasseController extends Controller
 {
     /**
-     * Change le mot de passe
-     * @return retour page de connexion avec input
-     */
+    * Change le mot de passe
+    * @return retour page de connexion avec input
+    */
     public function changerMdp(Request $request) 
     {
         
@@ -38,7 +38,7 @@ class ChangerMotDePasseController extends Controller
             else
             {
                 $gsbFrais = new GsbFrais();
-                $res = $gsbFrais->getInfosVisiteur($login,$ancienmdp);
+                $res = $gsbFrais->getInfosVisiteur($login,md5($ancienmdp));
                 if(empty($res))
                 {
                     Session::put('id', '0');
@@ -49,7 +49,7 @@ class ChangerMotDePasseController extends Controller
                 }
                 else
                 {
-                    $gsbFrais->ChangerMdp($login, $nouveaupwd);
+                    $gsbFrais->ChangerMdp($login, md5($nouveaupwd));
                     return back()->with('status', 'Mise à jour effectuée!');
                 }
             }
