@@ -16,7 +16,7 @@
         <div class="form-group">
             <label class="col-md-3 control-label">Nouveau mot de passe : </label>
             <div class="col-md-6">
-                <input type="password" name="nouveaumdp" class="form-control" placeholder="Votre nouveau mot de passe" required pattern ="[A-Za-z0-9]{8}" title="8 caractères : Majuscules,Minuscules,Chiffres" autofocus value="{{old('nouveaumdp')}}">
+                <input type="password" name="nouveaumdp" class="form-control" placeholder="Votre nouveau mot de passe" required pattern ="(?=^.{5,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="5 caractères : Majuscules,Minuscules,Chiffres" autofocus value="{{old('nouveaumdp')}}">
             </div>
         </div>
          </div>
@@ -24,7 +24,7 @@
         <div class="form-group">
             <label class="col-md-3 control-label">Nouveau mot de passe : </label>
             <div class="col-md-6">
-                <input type="password" name="nouveaumdpbis" class="form-control" placeholder="Votre nouveau mot de passe" value="{{old('nouveaumdpbis')}}" required pattern ="[A-Za-z0-9]{8}" title="8 caractères : Majuscules,Minuscules,Chiffres" autofocus >
+                <input type="password" name="nouveaumdpbis" class="form-control" placeholder="Votre nouveau mot de passe" value="{{old('nouveaumdpbis')}}" required pattern ="(?=^.{5,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" title="5 caractères : Majuscules,Minuscules,Chiffres" autofocus >
             </div>
         </div>
          </div>

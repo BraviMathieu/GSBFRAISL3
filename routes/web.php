@@ -62,6 +62,10 @@ Route::get('/getMdp', function () {
 
 Route::post('/getMdp', 'ChangerMotDePasseController@changerMdp');
 
+//Valider fiche de frais
+Route::get('/getValiderFrais', 'ValiderFraisController@getListeVisiteurs');
+
+Route::post('/getValiderFrais', 'ValiderFraisController@getListeVisiteurs');
 
 // Retourner à une vue dont on passe le nom en paramètre
 Route::get('getRetour/{retour}', function($retour){
@@ -72,3 +76,4 @@ Route::get('/createUser', function () {
    return view ('creerUtilisateur');
 });
 Route::post('/createUser', 'creerUtilisateurController@createUser');
+Route::get('/voirDetailFraisValidation/{mois}', 'ValiderFraisController@voirDetailFraisValidation');
