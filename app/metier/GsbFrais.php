@@ -269,5 +269,15 @@ public function getInfosVisiteur($login, $mdp){
                 $lerole = $laLigne[0]->aff_role;
                 return $lerole;
 	}
+        
+          
+        public function getListeVisiteurs() {
+                $req = "select visiteur.id, visiteur.nom, visiteur.prenom, fichefrais.mois, fichefrais.montantValide, fichefrais.idEtat
+                        from visiteur inner join fichefrais on visiteur.id=fichefrais.idVisiteur 
+                        where idEtat = 'CL'";
+                $lesLignes = DB::select($req);
+                return $lesLignes;
+
+        }
 }
 ?>
