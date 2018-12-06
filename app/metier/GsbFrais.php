@@ -146,8 +146,8 @@ public function getInfosVisiteur($login, $mdp){
 		$dernierMois = $this->dernierMoisSaisi($idVisiteur);
 		$laDerniereFiche = $this->getLesInfosFicheFrais($idVisiteur,$dernierMois);
 		if($laDerniereFiche->idEtat=='CR'){
-				$this->majEtatFicheFrais($idVisiteur, $dernierMois,'CL');
-				
+                    $this->majEtatFicheFrais($idVisiteur, $dernierMois,'CL');
+                    $this->calculMontantFrais($idVisiteur,$dernierMois);
 		}
 		$req = "insert into fichefrais(idvisiteur,mois,nbJustificatifs,montantValide,dateModif,idEtat) 
 		values(:idVisiteur,:mois,0,0,now(),'CR')";
@@ -243,6 +243,7 @@ public function getInfosVisiteur($login, $mdp){
  * Modifie le champ idEtat et met la date de modif à aujourd'hui
  * @param $idVisiteur 
  * @param $mois sous la forme aaaamm
+ * @param $etat
  */
  
 	public function majEtatFicheFrais($idVisiteur,$mois,$etat){
@@ -269,5 +270,46 @@ public function getInfosVisiteur($login, $mdp){
                 $lerole = $laLigne[0]->aff_role;
                 return $lerole;
 	}
+        
+/** 
+* Récuperer les montants et quantités d'une ligne de fichefrais
+* @param $idVisiteur 
+* @param $mois sous la forme aaaamm
+*/
+        
+        public function getMontantFraisForfait($idVisiteur,$mois)
+        {
+            $req = "select fraisforfait.montant, fraisforfait.id as idfrais,ligneFraisForfait.mois as mois,
+		lignefraisforfait.quantite as quantite from lignefraisforfait inner join fraisforfait 
+		on fraisforfait.id = lignefraisforfait.idfraisforfait
+		where lignefraisforfait.idvisiteur = :idVisiteur and lignefraisforfait.mois=:mois";
+            $lesLignes = DB::select($req, ['idVisiteur'=>$idVisiteur,'mois'=>$mois]);
+            $lemontant = $lesLignes;
+            return $lemontant;
+            
+        }
+        
+/** 
+* Calcul le montant des frais et met a jour la BDD
+* @param $idVisiteur 
+* @param $derniermois sous la forme aaaamm
+*/
+        public function calculMontantFrais($idVisiteur,$derniermois)
+        {
+            $montant = 0 ;
+            $LesFraisHorsForfait = $this->getLesFraisHorsForfait($idVisiteur, $derniermois);
+            $LesMontants = $this->getMontantFraisForfait($idVisiteur,$derniermois);
+            
+            foreach($LesFraisHorsForfait as $unFraisHorsForfait){
+                    $montant += $unFraisHorsForfait->montant;
+            }
+             foreach($LesMontants as $unMontant){
+                    $montant += $unMontant->montant*$unMontant->quantite;
+            }
+            
+            $req = "update ficheFrais set montantValide = :montant
+            where fichefrais.idvisiteur = :idVisiteur and fichefrais.mois = :mois";
+            DB::update($req, ['montant'=>$montant, 'idVisiteur'=>$idVisiteur, 'mois'=>$derniermois]);
+        }
 }
 ?>
