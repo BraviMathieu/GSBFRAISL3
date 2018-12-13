@@ -2,10 +2,18 @@
 @section('content')
 <div class="container">
     <div class="col-md-7">
+        @isset($confirmation)
+            <div class="alert alert-success">Mise à jour effectuée!</div>
+        @endisset
         <div class="blanc">
             <h1>Visiteurs ayant une fiche clôturée</h1>
         </div>
-        <table class="table table-bordered table-striped table-responsive">
+            @if(empty($mesVisiteurs))
+            <div class="alert alert-danger">
+                Aucune fiche de frais à valider
+            </div>
+            @else
+            <table class="table table-bordered table-striped table-responsive">
             <thead>
                 <tr>
                     <th style="width:20%">Visiteur</th>
@@ -19,11 +27,12 @@
                 <td> {{ $unVisiteur->prenom }} {{ $unVisiteur->nom }} </td> 
                 <td> {{ $unVisiteur->mois }} </td> 
                 <td> {{ $unVisiteur->montantValide }} </td>
-                <td style="text-align:center;"><a href="{{ url('/voirDetailFraisValidation') }}/{{ $unVisiteur->mois }}">
+                <td style="text-align:center;"><a href="{{ url('/voirDetailFraisValidation') }}/{{ $unVisiteur->nom }}/{{ $unVisiteur->prenom }}/{{ $unVisiteur->id }}/{{ $unVisiteur->mois }}">
                         <span class="glyphicon glyphicon-list" data-toggle="tooltip" data-placement="top" title="Voir"></span></a></td>
             </tr>
             @endforeach
-        </table>
+            </table>
+            @endif
     @if (session('erreur'))
         <div class="alert alert-danger">
          {{ session('erreur') }}

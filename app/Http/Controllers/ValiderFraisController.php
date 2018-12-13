@@ -21,25 +21,31 @@ class ValiderFraisController extends Controller
         //$erreur = Session::get('erreur');
         //Session::forget('erreur');
         $unVisiteur = new GsbFrais();
-        // On récupère la liste de tous les frais sur une année glissante
         $mesVisiteurs = $unVisiteur->getListeVisiteurs();
-        // On affiche la liste de ces frais       
         return view('ValiderFrais', compact('mesVisiteurs'));
     }
   /**
      * Affiche le détail (frais forfait et hors forfait)
      * @return type Vue detailFrais
      */ 
-  public function voirDetailFraisValidation($mois){
+  public function voirDetailFraisValidation($nom,$prenom,$idVisiteur,$mois){
       $gsbFrais = new GsbFrais();
-      $idVisiteur = Session::get('id');
       $lesFraisForfait = $gsbFrais->getLesFraisForfait($idVisiteur, $mois);
       $lesFraisHorsForfait = $gsbFrais->getLesFraisHorsForfait($idVisiteur, $mois);
       $montantTotal = 0;
       foreach ($lesFraisHorsForfait as $fhf){
             $montantTotal = $montantTotal + $fhf->montant;
       }
-      $titreVue = "Détail de la fiche de frais du mois ".$mois;
-      return view('listeDetailFicheValidation', compact('lesFraisForfait', 'lesFraisHorsForfait', 'mois', 'titreVue','montantTotal'));
+      $titreVue = "Détail de la fiche de frais du mois ".$mois." correspondant au visiteur ".$prenom." ".$nom;
+      return view('listeDetailFicheValidation', compact('lesFraisForfait', 'lesFraisHorsForfait', 'mois', 'titreVue','montantTotal','idVisiteur'));
+  }
+  
+  public function getListeApresValidation($idVisiteur,$mois){
+      $gsbFrais = new GsbFrais();
+      $gsbFrais->ValiderFiche($idVisiteur, $mois);
+      $unVisiteur = new GsbFrais();
+      $mesVisiteurs = $unVisiteur->getListeVisiteurs();
+      $confirmation = true;
+      return view('ValiderFrais', compact(['mesVisiteurs', 'confirmation']));
   }
 }
