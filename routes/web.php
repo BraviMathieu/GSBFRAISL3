@@ -72,8 +72,7 @@ Route::get('getRetour/{retour}', function($retour){
     return redirect("/".$retour);
 });
 
-Route::get('/createUser', function () {
-   return view ('creerUtilisateur');
-});
+
+Route::get('/createUser','creerUtilisateurController@lesRegions');
 Route::post('/createUser', 'creerUtilisateurController@createUser');
 Route::get('/voirDetailFraisValidation/{mois}', 'ValiderFraisController@voirDetailFraisValidation');

@@ -43,6 +43,13 @@
             <label class="col-md-3 control-label"> région d'embauche et rôle : </label>
             <div class="col-md-6">
                 <input type="text" name="reg" class="form-control" placeholder="région de l'utilisateur" autofocus>
+                 <select name='hauteur'>
+                @foreach($lesregions as $laregion)
+                <option value="$laregion[0]">
+                {{ $laregion[1] }}
+            </option>
+            @endforeach
+        </select>
                 <input type="text" name="role" class="form-control" placeholder="rôle de l'utilisateur" autofocus>
             </div>
         </div>

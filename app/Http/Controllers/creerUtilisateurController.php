@@ -6,12 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\metier\GsbFrais;
 
-class CreerUtilisateur extends Controller
+class CreerUtilisateurController extends Controller
 {
     /**
-     * Change le mot de passe
-     * @return retour page de connexion avec input
+     * récupère les régions
      */
+    public function lesRegions()
+    {
+        $gsbFrais = new GsbFrais();
+        $lesregions =$gsbFrais->getRegion();
+        return view('creerUtilisateur', compact('lesregions'));
+        
+    }
     public function createUser(Request $request) 
     {
        $id=$request->input('id');
@@ -25,21 +31,9 @@ class CreerUtilisateur extends Controller
        $email=$request->input('email');
        $region=$request->input('reg');
        $role=$request->input('role');
-       $mdp=createMdp();
-       if(strpos($nom,'-'))
-       {
-        $login= substr($prenom, 0,strpos($nom,'-')-1).$nom;
-        
-       }
-       else
-       {
-         $login= substr($prenom, 0,1).$nom;  
-       }
-         
-     }
-     private function createMdp()
-     {
-         $chiffreShuffle = str_shuffle("1234567890");
+       $gsbFrais = new GsbFrais();
+       
+       $chiffreShuffle = str_shuffle("1234567890");
         $minusShuffle = str_shuffle("azertyuiopqsdfghjklmwxcvbn");
         $majShuffle = str_shuffle("AZERTYUIOPQSDFGHJKLMWXCVBN");
  
@@ -50,8 +44,32 @@ class CreerUtilisateur extends Controller
         
         $pass = $pass1.$pass2.$pass3;
         $passShuffle = substr(str_shuffle($pass),0,6);
-        return $passShuffle;
+        $mdp=$passShuffle;
+       if(strpos($nom,'-'))
+       {
+        $login= substr($prenom, 0,strpos($nom,'-')-1).$nom;
+        
+       }
+       else
+       {
+         $login= substr($prenom, 0,1).$nom;  
+       }
+       
+       $verif = $gsbFrais->compareIdVisiteur($id);
+       if(!$verif)
+       {
+           return back()->with('erreur', "l'id existe déjà");
+       }
+       else
+       {
+           $gsbFrais->creerUtil($id, $nom, $prenom, $ville, $adresse, $cp, $dateEmbauch, $tel, $email, $region, $role, $login, MD5($mdp));
+           return back()->with('status', "réussi");
+       }
+       
+        
+       
      }
+     
      
            
         }
