@@ -375,5 +375,10 @@ public function getInfosVisiteur($login, $mdp){
             where fichefrais.idvisiteur = :idVisiteur and fichefrais.mois = :mois";
             DB::update($req, ['montant'=>$montant, 'idVisiteur'=>$idVisiteur, 'mois'=>$derniermois]);
         }
+        
+        public function ValiderFiche($idVisiteur,$mois){
+		$req = "update fichefrais set dateModif = date(now()), idEtat = 'VA' where idVisiteur = :idVisiteur and mois = :mois";
+                DB::update($req, ['idVisiteur'=>$idVisiteur, 'mois'=>$mois]);
+	}
 }
 ?>
