@@ -13,8 +13,9 @@ class CreerUtilisateurController extends Controller
      */
     public function lesRegions()
     {
+         $secteur = session::get('secteur');
         $gsbFrais = new GsbFrais();
-        $lesregions =$gsbFrais->getRegion();
+        $lesregions =$gsbFrais->getRegions($secteur);
         return view('creerUtilisateur', compact('lesregions'));
         
     }
@@ -63,7 +64,7 @@ class CreerUtilisateurController extends Controller
        else
        {
            $gsbFrais->creerUtil($id, $nom, $prenom, $ville, $adresse, $cp, $dateEmbauch, $tel, $email, $region, $role, $login, MD5($mdp));
-           return back()->with('status', "réussi");
+           return back()->with('status', "création réussie login: $login mot de passe : $mdp");
        }
        
         
