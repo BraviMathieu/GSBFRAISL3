@@ -76,4 +76,9 @@ Route::get('/createUser', function () {
    return view ('creerUtilisateur');
 });
 Route::post('/createUser', 'creerUtilisateurController@createUser');
-Route::get('/voirDetailFraisValidation/{mois}', 'ValiderFraisController@voirDetailFraisValidation');
+
+Route::get('/voirDetailFraisValidation/{nom}/{prenom}/{idVisiteur}/{mois}', 'ValiderFraisController@voirDetailFraisValidation');
+
+Route::get('/getValiderFrais/{idVisiteur}/{mois}', 'ValiderFraisController@getListeApresValidation');
+
+Route::post('/getValiderFrais/{idVisiteur}/{mois}', 'ValiderFraisController@getListeApresValidation');
