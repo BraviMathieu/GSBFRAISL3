@@ -15,7 +15,7 @@ class GsbFrais{
  * @return l'id, le nom et le prénom sous la forme d'un objet 
 */
 public function getInfosVisiteur($login, $mdp){
-        $req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom from visiteur 
+        $req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom,vue_affectation.aff_sec as secteur, vue_affectation.aff_reg as region from visiteur inner join vue_affectation on vue_affectation.idVisiteur = visiteur.id
         where visiteur.login=:login and visiteur.mdp=:mdp";
         $ligne = DB::select($req, ['login'=>$login, 'mdp'=>$mdp]);
         return $ligne;
@@ -283,7 +283,7 @@ public function getInfosVisiteur($login, $mdp){
             DB::insert($req,['id'=>$id,'nom'=>$nom,'prenom'=>$prenom,'login'=>$login,'mdp'=>$mdp,'adresse'=>$adresse,'cp'=>$cp,'ville'=>$ville,'dateEmbauch'=>$dateEmbauch,'tel'=>$tel,'email'=>$email]);
         }
  /** 
- * Récuperer le role du visiteur
+ * Récuperer les informations du visiteur
  * @param $idVisiteur
  */
         public function getRole($idVisiteur){
@@ -293,7 +293,11 @@ public function getInfosVisiteur($login, $mdp){
                 return $lerole;
 	}
         
-          
+        
+/** 
+ * Récuperer les visiteurs qui on une fiche de frais a CL (Cloturée)
+ * @param $idVisiteur
+ */
         public function getListeVisiteurs() {
                 $req = "select visiteur.id, visiteur.nom, visiteur.prenom, fichefrais.mois, fichefrais.montantValide, fichefrais.idEtat
                         from visiteur inner join fichefrais on visiteur.id=fichefrais.idVisiteur 

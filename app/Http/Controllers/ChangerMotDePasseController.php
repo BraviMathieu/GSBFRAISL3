@@ -42,7 +42,7 @@ class ChangerMotDePasseController extends Controller
                 if(empty($res))
                 {
                     Session::put('id', '0');
-                    $erreur = "Login ou mot de passe inconnu !";
+                    $erreur = "Mot de passe inconnu !";
                     
                     Session::flash('erreur', $erreur);
                     return back()->withInput($request->except('ancienmdp'));

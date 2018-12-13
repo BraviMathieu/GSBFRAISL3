@@ -30,12 +30,16 @@ class ConnexionController extends Controller
             $id = $visiteur->id;
             $nom =  $visiteur->nom;
             $prenom = $visiteur->prenom;
+            $region = $visiteur->region;
+            $secteur = $visiteur->secteur;
             $role = $gsbFrais->getRole($id);
             Session::put('id', $id);
             Session::put('nom', $nom);
             Session::put('prenom', $prenom);
             Session::put('login', $login);
             Session::put('role', $role);
+            Session::put('region', $region);
+            Session::put('secteur', $secteur);
 //            return view('home');
             return redirect('/');
         }
