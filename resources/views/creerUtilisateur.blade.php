@@ -42,8 +42,27 @@
         <div class="form-group">
             <label class="col-md-3 control-label"> région d'embauche et rôle : </label>
             <div class="col-md-6">
-                <input type="text" name="reg" class="form-control" placeholder="région de l'utilisateur" autofocus>
-                <input type="text" name="role" class="form-control" placeholder="rôle de l'utilisateur" autofocus>
+                 <select class="form-control" name='reg'>
+                @foreach($lesregions as $laregion)
+                <option value="{{$laregion->id}}">
+                {{ $laregion->reg_nom }}
+            </option>
+            @endforeach
+        </select>
+                <label class="form-check-label" >
+                 visiteur
+                </label>
+               <input class="form-check-input" type="radio" name="role" id="exampleRadios2" value="Visiteur">
+               <label class="form-check-label">
+                 délégué
+                </label>
+               <input class="form-check-input" type="radio" name="role" id="exampleRadios2" value="Délégué">
+               <label class="form-check-label">
+                 Responsable
+                </label>
+               <input class="form-check-input" type="radio" name="role" id="exampleRadios2" value="Responsable">
+                
+               
             </div>
         </div>
          </div>

@@ -72,11 +72,16 @@ Route::get('getRetour/{retour}', function($retour){
     return redirect("/".$retour);
 });
 
-Route::get('/createUser', function () {
-   return view ('creerUtilisateur');
-});
+//affiche le formulaire pour la création d'un utilisateur
+Route::get('/createUser','creerUtilisateurController@lesRegions');
+//retourne à uen vue ou on passe le login et le mot de passe en paramètre
 Route::post('/createUser', 'creerUtilisateurController@createUser');
 
+Route::get('/changerInfos',function(){
+    return view('changerInfos');
+}); 
+
+Route::get('/voirDetailFraisValidation/{mois}', 'ValiderFraisController@voirDetailFraisValidation');
 Route::get('/voirDetailFraisValidation/{nom}/{prenom}/{idVisiteur}/{mois}', 'ValiderFraisController@voirDetailFraisValidation');
 
 Route::get('/getValiderFrais/{idVisiteur}/{mois}', 'ValiderFraisController@getListeApresValidation');

@@ -279,10 +279,40 @@ public function getInfosVisiteur($login, $mdp){
    */
         public function creerUtil($id,$nom,$prenom,$ville,$adresse,$cp,$dateEmbauch,$tel,$email,$region,$role,$login,$mdp)
         {
+            
             $req ="insert into visiteur values(:id,:nom,:prenom,:login,:mdp,:adresse,:cp,:ville,:dateEmbauch,:tel,:email)";
             DB::insert($req,['id'=>$id,'nom'=>$nom,'prenom'=>$prenom,'login'=>$login,'mdp'=>$mdp,'adresse'=>$adresse,'cp'=>$cp,'ville'=>$ville,'dateEmbauch'=>$dateEmbauch,'tel'=>$tel,'email'=>$email]);
+            $req2 ="insert into travailler values(:id,current_date(),:reg,:role)";
+            DB::insert($req2,['id'=>$id,'reg'=>$region,'role'=>$role]);
         }
  /** 
+ * vérifie si l'id du visiteur n'est pas déjà prise
+ * @param $id
+ */
+       public function compareIdVisiteur($id){
+                $verif = true;
+		$req = "select id from visiteur";
+		$laLigne = DB::select($req, ['id'=>$id]);
+               foreach($laLigne as $uneligne)
+               {
+                  if($uneligne->id == $id)
+                {
+                    $verif=false;
+                } 
+               }
+                 return $verif;          
+	}  
+        /** 
+ * récupère les régions
+ */
+        public function getRegions($secteur)
+        {
+            $req = "select id , reg_nom from region where sec_code = :secteur";
+            $meslignes = DB::select($req,['secteur'=>$secteur]);
+            return $meslignes;
+        }
+ /** 
+ * Récuperer le role du visiteur
  * Récuperer les informations du visiteur
  * @param $idVisiteur
  */
