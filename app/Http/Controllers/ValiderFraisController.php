@@ -21,7 +21,19 @@ class ValiderFraisController extends Controller
         //$erreur = Session::get('erreur');
         //Session::forget('erreur');
         $unVisiteur = new GsbFrais();
-        $mesVisiteurs = $unVisiteur->getListeVisiteurs();
+        $roles = new GsbFrais();
+        $idVisiteur = Session::get('id');
+        $role = $roles->getRole($idVisiteur);
+        if($role == "Délégué")
+        {
+            $roleRes = "Visiteur";
+            $mesVisiteurs = $unVisiteur->getListeVisiteursRole($roleRes);
+        }
+        else
+        {
+            $roleRes = "Délégué";
+            $mesVisiteurs = $unVisiteur->getListeVisiteursRole($roleRes);
+        }
         return view('ValiderFrais', compact('mesVisiteurs'));
     }
   /**
@@ -44,8 +56,19 @@ class ValiderFraisController extends Controller
       $gsbFrais = new GsbFrais();
       $gsbFrais->ValiderFiche($idVisiteur, $mois);
       $unVisiteur = new GsbFrais();
-      $mesVisiteurs = $unVisiteur->getListeVisiteurs();
-      $confirmation = true;
+      $roles = new GsbFrais();
+      $idVisiteur = Session::get('id');
+      $role = $roles->getRole($idVisiteur);
+      if($role == "Délégué")
+      {
+          $roleRes = "Visiteur";
+          $mesVisiteurs = $unVisiteur->getListeVisiteursRole($roleRes);
+      }
+      else
+      {
+          $roleRes = "Délégué";
+          $mesVisiteurs = $unVisiteur->getListeVisiteursRole($roleRes);
+      }
       return view('ValiderFrais', compact(['mesVisiteurs', 'confirmation']));
   }
 }

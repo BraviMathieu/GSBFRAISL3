@@ -27,7 +27,7 @@
                 <td> {{ $unVisiteur->prenom }} {{ $unVisiteur->nom }} </td> 
                 <td> {{ $unVisiteur->mois }} </td> 
                 <td> {{ $unVisiteur->montantValide }} </td>
-                <td style="text-align:center;"><a href="{{ url('/voirDetailFraisValidation') }}/{{ $unVisiteur->nom }}/{{ $unVisiteur->prenom }}/{{ $unVisiteur->id }}/{{ $unVisiteur->mois }}">
+                <td style="text-align:center;"><a href="{{ url('/voirDetailFraisValidation') }}/{{ $unVisiteur->nom }}/{{ $unVisiteur->prenom }}/{{ $unVisiteur->idVisiteur }}/{{ $unVisiteur->mois }}">
                         <span class="glyphicon glyphicon-list" data-toggle="tooltip" data-placement="top" title="Voir"></span></a></td>
             </tr>
             @endforeach

@@ -350,9 +350,16 @@ public function getInfosPersonne($login){
  */
         public function getListeVisiteurs() {
                 $req = "select visiteur.id, visiteur.nom, visiteur.prenom, fichefrais.mois, fichefrais.montantValide, fichefrais.idEtat
-                        from visiteur inner join fichefrais on visiteur.id=fichefrais.idVisiteur 
+                        from visiteur inner join fichefrais on visiteur.id=fichefrais.idVisiteur
                         where idEtat = 'CL'";
                 $lesLignes = DB::select($req);
+                return $lesLignes;
+        }
+        public function getListeVisiteursRole($role) {
+                $req = "select vue_affectation.idVisiteur, visiteur.nom, visiteur.prenom, fichefrais.mois, fichefrais.montantValide, fichefrais.idEtat
+                        from vue_affectation inner join fichefrais on vue_affectation.idVisiteur=fichefrais.idVisiteur inner join visiteur on fichefrais.idVisiteur=visiteur.id
+                        where idEtat = 'CL' AND aff_role = :role";
+                $lesLignes = DB::select($req, ['role'=>$role]);
                 return $lesLignes;
         }
 /** 
