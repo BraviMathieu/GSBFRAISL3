@@ -9,16 +9,44 @@ use Illuminate\Support\Facades\DB;
 class GsbFrais{   		
 /**
  * Retourne les informations d'un visiteur
- 
  * @param $login 
  * @param $mdp
  * @return l'id, le nom et le prénom sous la forme d'un objet 
 */
 public function getInfosVisiteur($login, $mdp){
-        $req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom,vue_affectation.aff_sec as secteur, vue_affectation.aff_reg as region from visiteur inner join vue_affectation on vue_affectation.idVisiteur = visiteur.id
+        $req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom,vaffectation.aff_sec as secteur, vaffectation.aff_reg as region from visiteur inner join vaffectation on vaffectation.idVisiteur = visiteur.id
         where visiteur.login=:login and visiteur.mdp=:mdp";
         $ligne = DB::select($req, ['login'=>$login, 'mdp'=>$mdp]);
         return $ligne;
+}
+        
+/**
+* Retourne les informations d'une personne
+* @param $login 
+* @return l'adresse, le code postal, le numéro de téléphone et l'adresse mail de la personne
+*/
+public function getInfosPersonne($login){
+        $req = "select adresse , cp , ville , tel , email from visiteur 
+        where visiteur.login=:login";
+        $ligne = DB::select($req, ['login'=>$login]);
+        return $ligne;
+}
+ 
+/**
+* Met a jour les données dans la base pour une personne donnée
+* @param $adresse
+* @param $cp
+* @param $tel
+* @param $email
+* @param $ville
+* @param $login
+* @return l'adresse, le code postal, le numéro de téléphone et l'adresse mail de la personne
+*/
+        
+        function changerLesInfos($adresse, $cp,  $tel, $email, $ville, $login){
+            $req="update visiteur set adresse = :adresse, cp = :cp , tel = :tel, email = :email, ville = :ville where login like :login ";
+            $ligne = DB::select($req, ['adresse'=>$adresse, 'cp'=>$cp,'tel'=>$tel,'email'=>$email,'ville'=>$ville,'login'=>$login]);
+        
 }
 /**
  * Retourne sous forme d'un tableau d'objets toutes les lignes de frais hors forfait
@@ -134,13 +162,12 @@ public function getInfosVisiteur($login, $mdp){
 	}
 	
 /**
- * Crée une nouvelle fiche de frais et les lignes de frais au forfait pour un visiteur et un mois donnés
- 
- * récupère le dernier mois en cours de traitement, met à 'CL' son champs idEtat, crée une nouvelle fiche de frais
- * avec un idEtat à 'CR' et crée les lignes de frais forfait de quantités nulles 
- * @param $idVisiteur 
- * @param $mois sous la forme aaaamm
-*/
+* Crée une nouvelle fiche de frais et les lignes de frais au forfait pour un visiteur et un mois donnés
+* récupère le dernier mois en cours de traitement, met à 'CL' son champs idEtat, crée une nouvelle fiche de frais
+* avec un idEtat à 'CR' et crée les lignes de frais forfait de quantités nulles 
+* @param $idVisiteur 
+* @param $mois sous la forme aaaamm
+**/
 	public function creeNouvellesLignesFrais($idVisiteur,$mois){
 		$dernierMois = $this->dernierMoisSaisi($idVisiteur);
 		$laDerniereFiche = $this->getLesInfosFicheFrais($idVisiteur,$dernierMois);
@@ -260,22 +287,22 @@ public function getInfosVisiteur($login, $mdp){
 		DB::update($req, ['login'=>$login, 'mdp'=>$mdp]);
 	} 
  
-  /**
-   * créer un nouvel utilisateur
-   *  @param $id
-   *  @param $nom
-   *  @param $prenom 
-   *  @param $ville 
-   *  @param $adresse 
-   *  @param $cp 
-   *  @param $dateEmbauch
-   *  @param $tel
-   *  @param $email
-   *  @param $region
-   *  @param $role
-   *  @param $login
-   *  @param $mdp
-   */
+/**
+* créer un nouvel utilisateur
+*  @param $id
+*  @param $nom
+*  @param $prenom 
+*  @param $ville 
+*  @param $adresse 
+*  @param $cp 
+*  @param $dateEmbauch
+*  @param $tel
+*  @param $email
+*  @param $region
+*  @param $role
+*  @param $login
+*  @param $mdp
+**/
         public function creerUtil($id,$nom,$prenom,$ville,$adresse,$cp,$dateEmbauch,$tel,$email,$region,$role,$login,$mdp)
         {
             
@@ -301,9 +328,10 @@ public function getInfosVisiteur($login, $mdp){
                }
                  return $verif;          
 	}  
-        /** 
- * récupère les régions
- */
+/** 
+* Récupère les régions
+* $secteur
+**/
         public function getRegions($secteur)
         {
             $req = "select id , reg_nom from region where sec_code = :secteur";
@@ -316,7 +344,7 @@ public function getInfosVisiteur($login, $mdp){
  * @param $idVisiteur
  */
         public function getRole($idVisiteur){
-		$req = "select * from vue_affectation where idVisiteur = :idVisiteur";
+		$req = "select * from vaffectation where idVisiteur = :idVisiteur";
 		$laLigne = DB::select($req, ['idVisiteur'=>$idVisiteur]);
                 $lerole = $laLigne[0]->aff_role;
                 return $lerole;
@@ -333,17 +361,21 @@ public function getInfosVisiteur($login, $mdp){
                         where idEtat = 'CL'";
                 $lesLignes = DB::select($req);
                 return $lesLignes;
-        }
+        }     
+/** 
+ * Récuperer les informations des visiteurs qui ont une fichefrais a l'état cloturé et pour un role définit
+ * @param $role
+ */
         public function getListeVisiteursRole($role) {
-                $req = "select vue_affectation.idVisiteur, visiteur.nom, visiteur.prenom, fichefrais.mois, fichefrais.montantValide, fichefrais.idEtat
-                        from vue_affectation inner join fichefrais on vue_affectation.idVisiteur=fichefrais.idVisiteur inner join visiteur on fichefrais.idVisiteur=visiteur.id
+                $req = "select vaffectation.idVisiteur, visiteur.nom, visiteur.prenom, fichefrais.mois, fichefrais.montantValide, fichefrais.idEtat
+                        from vaffectation inner join fichefrais on vaffectation.idVisiteur=fichefrais.idVisiteur inner join visiteur on fichefrais.idVisiteur=visiteur.id
                         where idEtat = 'CL' AND aff_role = :role";
                 $lesLignes = DB::select($req, ['role'=>$role]);
                 return $lesLignes;
         }
 /** 
 * Récuperer les montants et quantités d'une ligne de fichefrais
-* @param $idVisiteur 
+* @param $idVisiteur  
 * @param $mois sous la forme aaaamm
 */
         
@@ -381,7 +413,11 @@ public function getInfosVisiteur($login, $mdp){
             where fichefrais.idvisiteur = :idVisiteur and fichefrais.mois = :mois";
             DB::update($req, ['montant'=>$montant, 'idVisiteur'=>$idVisiteur, 'mois'=>$derniermois]);
         }
-        
+/** 
+* Met a jour une fiche de frais a l'etat validée pour un visiteur et un mois donné
+* @param $idVisiteur 
+* @param $mois
+*/
         public function ValiderFiche($idVisiteur,$mois){
 		$req = "update fichefrais set dateModif = date(now()), idEtat = 'VA' where idVisiteur = :idVisiteur and mois = :mois";
                 DB::update($req, ['idVisiteur'=>$idVisiteur, 'mois'=>$mois]);
