@@ -84,8 +84,7 @@ public function getInfosVisiteur($login, $mdp){
 		foreach($lesCles as $unIdFrais){
 			$qte = $lesFrais[$unIdFrais];
 			$req = "update lignefraisforfait set lignefraisforfait.quantite = :qte
-			where lignefraisforfait.idvisiteur = :idVisiteur and lignefraisforfait.mois = :mois
-			and lignefraisforfait.idfraisforfait = :unIdFrais";
+			where lignefraisforfait.idvisiteur = :idVisiteur and lignefraisforfait.mois = :mois and lignefraisforfait.idfraisforfait = :unIdFrais";
                         DB::update($req, ['qte'=>$qte, 'idVisiteur'=>$idVisiteur, 'mois'=>$mois, 'unIdFrais'=>$unIdFrais]);
 		}
 		
@@ -387,5 +386,11 @@ public function getInfosVisiteur($login, $mdp){
 		$req = "update fichefrais set dateModif = date(now()), idEtat = 'VA' where idVisiteur = :idVisiteur and mois = :mois";
                 DB::update($req, ['idVisiteur'=>$idVisiteur, 'mois'=>$mois]);
 	}
+        
+        public function majFraisForfaitValidation($qte, $idVisiteur, $mois, $lesFrais){
+                $req = "update lignefraisforfait set lignefraisforfait.quantite = :qte
+                where lignefraisforfait.idvisiteur = :idVisiteur and lignefraisforfait.mois = :mois and lignefraisforfait.idfraisforfait = :lesFrais";
+                DB::update($req, ['qte'=>$qte, 'idVisiteur'=>$idVisiteur, 'mois'=>$mois, 'lesFrais'=>$lesFrais]);
+		}
 }
 ?>

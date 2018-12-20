@@ -52,6 +52,14 @@ class ValiderFraisController extends Controller
       return view('listeDetailFicheValidation', compact('lesFraisForfait', 'lesFraisHorsForfait', 'mois', 'titreVue','montantTotal','idVisiteur'));
   }
   
+  public function SuppressionLigneHorsForfait($idVisiteur,$mois,$id)
+  {
+      $gsbFrais = new GsbFrais();
+      $gsbFrais->supprimerFraisHorsForfait($id);
+      return redirect()->back()->with('status', 'Suppression effectuée!');
+      
+  }
+  
   public function getListeApresValidation($idVisiteur,$mois){
       $gsbFrais = new GsbFrais();
       $gsbFrais->ValiderFiche($idVisiteur, $mois);
@@ -70,5 +78,13 @@ class ValiderFraisController extends Controller
           $mesVisiteurs = $unVisiteur->getListeVisiteursRole($roleRes);
       }
       return view('ValiderFrais', compact(['mesVisiteurs', 'confirmation']));
+  }
+  
+  public function ModificationLigneFrais($idVisiteur,$mois,$id,$qte)
+  {
+      $gsbFrais = new GsbFrais();
+      $gsbFrais->majFraisForfaitValidation($qte,$idVisiteur,$mois,$id);
+      return redirect()->back()->with('statusMod', 'Modification effectuée!');
+      
   }
 }
