@@ -80,6 +80,8 @@ Route::post('/createUser', 'creerUtilisateurController@createUser');
 Route::get('/changerInfos',function(){
     return view('changerInfos');
 }); 
+Route::get('/changerInfos','changerInformationsController@lesInfos');
+Route::post('/changerInfos','changerInformationsController@changerInfos');
 
 Route::get('/voirDetailFraisValidation/{mois}', 'ValiderFraisController@voirDetailFraisValidation');
 Route::get('/voirDetailFraisValidation/{nom}/{prenom}/{idVisiteur}/{mois}', 'ValiderFraisController@voirDetailFraisValidation');

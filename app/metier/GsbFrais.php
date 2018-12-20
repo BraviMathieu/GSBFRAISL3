@@ -20,6 +20,26 @@ public function getInfosVisiteur($login, $mdp){
         $ligne = DB::select($req, ['login'=>$login, 'mdp'=>$mdp]);
         return $ligne;
 }
+        
+        /**
+ * Retourne les informations d'une personne
+ 
+ * @param $login 
+ * @return l'adresse, le code postal, le numéro de téléphone et l'adresse mail de la personne
+*/
+public function getInfosPersonne($login){
+        $req = "select adresse , cp , ville , tel , email from visiteur 
+        where visiteur.login=:login";
+        $ligne = DB::select($req, ['login'=>$login]);
+        return $ligne;
+}
+        
+        
+        function changerLesInfos($adresse, $cp,  $tel, $email, $ville, $login){
+            $req="update visiteur set adresse = :adresse, cp = :cp , tel = :tel, email = :email, ville = :ville where login like :login ";
+            $ligne = DB::select($req, ['adresse'=>$adresse, 'cp'=>$cp,'tel'=>$tel,'email'=>$email,'ville'=>$ville,'login'=>$login]);
+        
+}
 /**
  * Retourne sous forme d'un tableau d'objets toutes les lignes de frais hors forfait
  * concernées par les deux arguments
