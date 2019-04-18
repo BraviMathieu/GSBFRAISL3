@@ -41,7 +41,7 @@ class ChangerMotDePasseController extends Controller
                 $res = $gsbFrais->getInfosVisiteur($login,md5($ancienmdp));
                 if(empty($res))
                 {
-                    Session::put('id', '0');
+                   // Session::put('id', '0');
                     $erreur = "Mot de passe inconnu !";
                     
                     Session::flash('erreur', $erreur);
