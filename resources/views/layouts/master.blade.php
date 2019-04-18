@@ -42,11 +42,13 @@
                         <ul class="nav navbar-nav"> 
 @if (Session::get('role') == 'Visiteur')  
                            <li><a href="{{ url('/saisirFraisForfait') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Saisir Frais</a></li>
+					       <li><a href="{{ url('/getListeFrais') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Voir Frais</a></li>
 @endif 
 @if (Session::get('role') == 'Délégué')  
                            <li><a href="{{ url('/saisirFraisForfait') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Saisir Frais</a></li>
-@endif 
                             <li><a href="{{ url('/getListeFrais') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Voir Frais</a></li>
+					   @endif 
+
 
                             <li><a href="{{ url('/changerInfos') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Changer informations</a></li>
                         
