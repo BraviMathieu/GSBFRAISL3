@@ -58,14 +58,23 @@ class CreerUtilisateurController extends Controller
        
        $verif = $gsbFrais->compareIdVisiteur($id);
 
+	   $veriflogin = $gsbFrais->getInfosPersonne($login);
+	   
        if($verif != null)
        {
            return back()->with('erreur', "l'id existe déjà");
        }
        else
        {
-           $gsbFrais->creerUtil($id, $nom, $prenom, $ville, $adresse, $cp, $dateEmbauch, $tel, $email, $region, $role, $login, MD5($mdp));
-           return back()->with('status', "création réussie login: $login mot de passe : $mdp");
+		    if($veriflogin != null)
+		   {
+			   return back()->with('erreur', "le login existe déjà");
+		   }
+		   else
+		   {
+			   $gsbFrais->creerUtil($id, $nom, $prenom, $ville, $adresse, $cp, $dateEmbauch, $tel, $email, $region, $role, $login, MD5($mdp));
+			   return back()->with('status', "création réussie login: $login mot de passe : $mdp");
+		   }
        }
        
        
