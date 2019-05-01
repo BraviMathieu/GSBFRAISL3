@@ -22,9 +22,9 @@
         <div class="form-group">
             <label class="col-md-3 control-label"> Ville adresse et Code postal : </label>
             <div class="col-md-6">
-                <input type="text" name="ville" class="form-control" placeholder="Ville de l'utilisateur" pattern="[A-Za-z]{1,}" required autofocus>
                 <input type="text" name="adr" class="form-control" placeholder="Adresse de l'utilisateur" required autofocus>
                 <input type="text" name="cp" class="form-control" placeholder="Code postal de l'utilisateur" pattern="[0-9]{5}" required autofocus>
+				 <input type="text" name="ville" class="form-control" placeholder="Ville de l'utilisateur" pattern="[A-Za-z]{1,}" required autofocus>
             </div>
         </div>
          </div>
@@ -32,8 +32,8 @@
         <div class="form-group">
             <label class="col-md-3 control-label"> Date d'embauche numéro de télephonne et email : </label>
             <div class="col-md-6">
-                <input type="text" name="dateEmbauch" class="form-control" placeholder="Date d'embauche de l'utilisateur" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" autofocus>
-                <input type="text" name="tel" class="form-control" placeholder="Numéro de téléphone de l'utilisatreur" pattern="^(?:0|\(?\+33\)?\s?|0033\s?)[1-79](?:[\.\-\s]?\d\d){4}$" autofocus>
+               <input type="date" name="dateEmbauch" class="form-control" required>
+				<input type="text" name="tel" class="form-control" placeholder="Numéro de téléphone de l'utilisatreur" pattern="^(?:0|\(?\+33\)?\s?|0033\s?)[1-79](?:[\.\-\s]?\d\d){4}$" autofocus>
                 <input type="email" name="email" class="form-control" placeholder="Email de l'utilisateur" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" autofocus>
             </div>
         </div>
@@ -57,12 +57,7 @@
                  Délégué
                 </label>
                <input class="form-check-input" type="radio" name="role" id="exampleRadios2" value="Délégué">
-               <label class="form-check-label">
-                 Responsable
-                </label>
-               <input class="form-check-input" type="radio" name="role" id="exampleRadios2" value="Responsable">
-                
-               
+              
             </div>
         </div>
          </div>

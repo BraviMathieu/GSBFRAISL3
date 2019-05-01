@@ -316,17 +316,9 @@ public function getInfosPersonne($login){
  * @param $id
  */
        public function compareIdVisiteur($id){
-                $verif = true;
-		$req = "select id from visiteur";
+		$req = "select * from visiteur where id = :id";
 		$laLigne = DB::select($req, ['id'=>$id]);
-               foreach($laLigne as $uneligne)
-               {
-                  if($uneligne->id == $id)
-                {
-                    $verif=false;
-                } 
-               }
-                 return $verif;          
+		return $laLigne;          
 	}  
 /** 
 * Récupère les régions

@@ -57,7 +57,8 @@ class CreerUtilisateurController extends Controller
        }
        
        $verif = $gsbFrais->compareIdVisiteur($id);
-       if(!$verif)
+
+       if($verif != null)
        {
            return back()->with('erreur', "l'id existe déjà");
        }
