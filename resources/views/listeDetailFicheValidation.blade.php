@@ -27,7 +27,7 @@
             <tr>   
                 <td> {{ $unFF->idfrais }} </td> 
                 <td> {{ $unFF->quantite }} </td>
-                <td style="text-align: center;width:1px"><input type="text" name="mod" size="3"></td>
+                <td style="text-align: center;width:1px"><input type="text" id="quantite" name="quantite" size="3" ></td>
                 <td style="text-align: center;width:1px"><a href="{{url('/getModifierFrais')}}/{{$idVisiteur}}/{{$mois}}/{{$unFF->idfrais}}/{{$unFF->quantite}}" ><button type="button" class="btn btn-sm btn-primary" style="height:30px">Modification</button></a></td>
             </tr>
             @endforeach

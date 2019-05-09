@@ -87,13 +87,10 @@ Route::get('/voirDetailFraisValidation/{mois}', 'ValiderFraisController@voirDeta
 Route::get('/voirDetailFraisValidation/{nom}/{prenom}/{idVisiteur}/{mois}', 'ValiderFraisController@voirDetailFraisValidation');
 
 Route::get('/getValiderFrais/{idVisiteur}/{mois}', 'ValiderFraisController@getListeApresValidation');
-
 Route::post('/getValiderFrais/{idVisiteur}/{mois}', 'ValiderFraisController@getListeApresValidation');
 
 Route::get('/getSuppressionLigne/{idVisiteur}/{mois}/{id}', 'ValiderFraisController@SuppressionLigneHorsForfait');
-
 Route::post('/getSuppressionLigne/{idVisiteur}/{mois}/{id}', 'ValiderFraisController@SuppressionLigneHorsForfait');
 
 Route::get('/getModifierFrais/{idVisiteur}/{mois}/{idfrais}/{quantite}', 'ValiderFraisController@ModificationLigneFrais');
-
 Route::post('/getModifierFrais/{idVisiteur}/{mois}/{idfrais}/{quantite}', 'ValiderFraisController@ModificationLigneFrais');

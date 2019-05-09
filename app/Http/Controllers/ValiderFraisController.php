@@ -82,9 +82,10 @@ class ValiderFraisController extends Controller
       return view('ValiderFrais', compact(['mesVisiteurs', 'confirmation']));
   }
   
-  public function ModificationLigneFrais($idVisiteur,$mois,$id,$qte)
+  public function ModificationLigneFrais($idVisiteur,$mois,$id,$qte,Request $request)
   {
       $gsbFrais = new GsbFrais();
+      $qte = $request->input('quantite');
       $gsbFrais->majFraisForfaitValidation($qte,$idVisiteur,$mois,$id);
       return redirect()->back()->with('statusMod', 'Modification effectuée!');
       
