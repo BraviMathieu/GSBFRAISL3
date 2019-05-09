@@ -358,11 +358,19 @@ public function getInfosPersonne($login){
  * Récuperer les informations des visiteurs qui ont une fichefrais a l'état cloturé et pour un role définit
  * @param $role
  */
-        public function getListeVisiteursRole($role) {
-                $req = "select vaffectation.idVisiteur, visiteur.nom, visiteur.prenom, fichefrais.mois, fichefrais.montantValide, fichefrais.idEtat
+        public function getListeVisiteursRoleReg($role, $reg) {
+                $req = "select vaffectation.idVisiteur, vaffectation.aff_reg, visiteur.nom, visiteur.prenom, fichefrais.mois, fichefrais.montantValide, fichefrais.idEtat
                         from vaffectation inner join fichefrais on vaffectation.idVisiteur=fichefrais.idVisiteur inner join visiteur on fichefrais.idVisiteur=visiteur.id
-                        where idEtat = 'CL' AND aff_role = :role";
-                $lesLignes = DB::select($req, ['role'=>$role]);
+                        where idEtat = 'CL' AND aff_role = :role AND aff_reg = :reg";
+                $lesLignes = DB::select($req, ['role'=>$role, 'reg'=>$reg]);
+                return $lesLignes;
+        }
+        
+        public function getListeVisiteursRoleSec($role, $sec) {
+                $req = "select vaffectation.idVisiteur, vaffectation.aff_sec, visiteur.nom, visiteur.prenom, fichefrais.mois, fichefrais.montantValide, fichefrais.idEtat
+                        from vaffectation inner join fichefrais on vaffectation.idVisiteur=fichefrais.idVisiteur inner join visiteur on fichefrais.idVisiteur=visiteur.id
+                        where idEtat = 'CL' AND aff_role = :role AND aff_sec = :sec";
+                $lesLignes = DB::select($req, ['role'=>$role, 'sec'=>$sec]);
                 return $lesLignes;
         }
 /** 

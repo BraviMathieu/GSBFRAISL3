@@ -24,15 +24,17 @@ class ValiderFraisController extends Controller
         $roles = new GsbFrais();
         $idVisiteur = Session::get('id');
         $role = $roles->getRole($idVisiteur);
+        $reg = Session::get('region');
+        $sec = Session::get('secteur');
         if($role == "Délégué")
         {
             $roleRes = "Visiteur";
-            $mesVisiteurs = $unVisiteur->getListeVisiteursRole($roleRes);
+            $mesVisiteurs = $unVisiteur->getListeVisiteursRoleReg($roleRes, $reg);
         }
         else
         {
             $roleRes = "Délégué";
-            $mesVisiteurs = $unVisiteur->getListeVisiteursRole($roleRes);
+            $mesVisiteurs = $unVisiteur->getListeVisiteursRoleSec($roleRes, $sec);
         }
         return view('ValiderFrais', compact('mesVisiteurs'));
     }
